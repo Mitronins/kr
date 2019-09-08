@@ -1,0 +1,39 @@
+body {
+  background: linear-gradient(45deg, rgba(103, 0, 31, .8), rgba(34, 101, 163, .5));
+}
+
+.menu {
+  height: 80px;
+  width: 100%;
+  background: rgba(34, 34, 34, .2);
+  display: flex;
+}
+
+.menuItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 120px;
+  height: 100%;
+  color: white;
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-family: 'Arimo', sans-serif;
+  font-weight: bold;
+  padding-left: 16px;
+  padding-right: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(34, 34, 34, .4)
+  }
+}
+
+.activeMenuItem {
+  background-color: rgba(0,0,0,.1);
+  cursor: default;
+
+  &:hover {
+    background-color: rgba(0,0,0,.1);
+  }
+}
