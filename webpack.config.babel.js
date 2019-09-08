@@ -8,10 +8,15 @@ import autoprefixer from 'autoprefixer';
 
 const srcPath = path.join(__dirname, 'src');
 const isProd = process.env.NODE_ENV === 'production';
-const extractCSS = new ExtractTextPlugin({
-    filename: 'css/[name].[hash:6].css',
-    allChunks: true
-});
+
+const ExtractAntdCss = new ExtractTextPlugin({
+    filename: 'base.[hash].css',
+})
+
+const ExtractOwnCss = new ExtractTextPlugin({
+    filename: 'app.[hash].css',
+})
+
 export const port = 8889;
 export const host = '127.0.0.1';
 
@@ -31,7 +36,8 @@ const plugins = [
         'React': 'react',
         'cn': 'classnames'
     }),
-    extractCSS
+    ExtractAntdCss,
+    ExtractOwnCss,
 ];
 
 if (isProd) {
@@ -65,7 +71,7 @@ export default {
             },
             {
                 test: /\.scss$/,
-                loader: extractCSS.extract({
+                loader: ExtractOwnCss.extract({
                     use: [
                         {
                             loader: 'css-loader',
@@ -89,6 +95,44 @@ export default {
                         }
                     ]
                 }),
+            },
+            {
+                test: /\.less$/,
+                use: ExtractAntdCss.extract({
+                    fallback: {
+                        loader: 'style-loader',
+                        options: {
+                            sourceMap: true
+                        },
+                    },
+                    use: [{
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                plugins: [
+                                    autoprefixer(),
+                                ],
+                                sourceMap: true,
+                            },
+                        },
+                        {
+                            loader: 'less-loader',
+                            options: {
+                                sourceMap: true,
+                                modifyVars: {
+                                    '@primary-color': '#3165a2',
+                                    '@font-family': '"Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                                    '@body-background': '#fff'
+                                }
+                            }
+                        }
+                    ],
+                })
             },
             {
                 test: /\.(gif|png|jpe?g|svg)$/i,
