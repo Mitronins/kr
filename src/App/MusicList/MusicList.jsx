@@ -11,9 +11,9 @@ class AuthorListCmp extends React.Component {
     isAdding: true
   }
   getIds = () => {
-    const authors = dataBase.queryAll(MUSICS_TABLE).map((d) => d.ID)
+    const musicsIds = dataBase.queryAll(MUSICS_TABLE).map((d) => d.ID)
     this.setState({ isAdding: false })
-    this.setState({ musicsIds: authors})
+    this.setState({ musicsIds })
   }
 
   componentDidMount() {

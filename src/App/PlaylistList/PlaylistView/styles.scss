@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  align-items: center;
+  height: auto;
+  min-height: 70px;
+  width: calc(100% - 6px);
+  background: rgba(40, 114, 159, 0.4);
+  margin: 3px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  overflow: auto;
+  padding: 10px;
+}
+
+.input {
+
+}
+
+.select {
+  width: 150px;
+}
+
+.inputContainer {
+  margin-left: 20px;
+}
+
+.text {
+
+}
+
+.btnAdd {
+  margin-left: auto;
+  margin-right: 65px;
+  background: #3baeff;
+  color: white;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+}

@@ -120,7 +120,7 @@ class MusicViewCmp extends React.Component {
             {
               authors.map((a) => {
                 return (
-                  <Select.Option value={a.ID}>
+                  <Select.Option key={a.ID} value={a.ID}>
                     {a.name}
                   </Select.Option>
                 )
