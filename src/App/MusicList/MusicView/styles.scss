@@ -11,6 +11,7 @@
   border: 1px solid #e8e9ee;
   box-shadow: 1px 1px 1px #31313126, -1px -1px 1px #31313100;
   transition: all .2s ease-out;
+  position: relative;
 
   &:hover {
     box-shadow: 3px 3px 3px #31313126, -1px -1px 1px #31313100;
@@ -34,11 +35,26 @@
 }
 
 .btnAdd {
-  margin-left: auto;
   margin-right: 65px;
   background: #3baeff;
   color: white;
   border-radius: 3px;
   padding: 5px 10px;
   cursor: pointer;
+}
+
+.btnComment {
+  margin-left: auto;
+  margin-right: 20px;
+  background: #3baeff;
+  color: white;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.commentsContainer {
+  position: absolute;
+  top: 80px;
+  display: flex;
 }

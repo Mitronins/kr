@@ -13,6 +13,7 @@ class MusicViewCmp extends React.Component {
     year: '',
     comments: [],
     authors: [],
+    isCommentOpen: false,
   }
 
   getMusic = () => {
@@ -94,56 +95,77 @@ class MusicViewCmp extends React.Component {
   }
 
   render() {
-    const { authors } = this.state
+    const { authors, isCommentOpen } = this.state
 
     return (
-      <div className={styles.container}>
-        <div className={styles.inputContainer}>
-          <div className={styles.text}>
-            Название
+      <React.Fragment>
+        <div className={styles.container}
+             style={isCommentOpen ?
+               {
+                 height: '400px',
+                 alignItems: 'flex-start',
+                 paddingTop: '10px',
+               } : {}}>
+          <div className={styles.inputContainer}>
+            <div className={styles.text}>
+              Название
+            </div>
+            <Input
+              className={styles.input}
+              value={this.state.name}
+              onChange={this.updateMusic(1)}
+            />
           </div>
-          <Input
-            className={styles.input}
-            value={this.state.name}
-            onChange={this.updateMusic(1)}
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <div className={styles.text}>
-            Автор
+          <div className={styles.inputContainer}>
+            <div className={styles.text}>
+              Автор
+            </div>
+            <Select
+              value={this.state.author}
+              className={styles.select}
+              onChange={this.updateMusic(2)}
+            >
+              {
+                authors.map((a) => {
+                  return (
+                    <Select.Option key={a.ID} value={a.ID}>
+                      {a.name}
+                    </Select.Option>
+                  )
+                })
+              }
+            </Select>
           </div>
-          <Select
-            value={this.state.author}
-            className={styles.select}
-            onChange={this.updateMusic(2)}
-          >
-            {
-              authors.map((a) => {
-                return (
-                  <Select.Option key={a.ID} value={a.ID}>
-                    {a.name}
-                  </Select.Option>
-                )
-              })
-            }
-          </Select>
-        </div>
-        <div className={styles.inputContainer}>
-          <div className={styles.text}>
-            Год
+          <div className={styles.inputContainer}>
+            <div className={styles.text}>
+              Год
+            </div>
+            <Input
+              value={this.state.year}
+              className={styles.input}
+              onChange={this.updateMusic(3)}
+            />
           </div>
-          <Input
-            value={this.state.year}
-            className={styles.input}
-            onChange={this.updateMusic(3)}
-          />
-        </div>
-        <div className={styles.btnAdd} onClick={this.props.id ? this.deleteMusic : this.addMusic}>
           {
-            this.props.id ? 'Удалить' : 'Добавить'
+            this.props.id &&
+            <div className={styles.btnComment}
+                 onClick={() => this.setState({ isCommentOpen: !this.state.isCommentOpen })}>
+              Комментарии
+            </div>
           }
+          <div className={styles.btnAdd} onClick={this.props.id ? this.deleteMusic : this.addMusic}>
+            {
+              this.props.id ? 'Удалить' : 'Добавить'
+            }
+          </div>
         </div>
-      </div>
+        {
+          isCommentOpen &&
+          <div className={styles.commentsContainer}>
+            comments
+          </div>
+        }
+      </React.Fragment>
     )
   }
 }
