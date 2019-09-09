@@ -1,11 +1,19 @@
 import React from 'react';
 import { dataBase } from '../../Root'
+import { MusicView } from './MusicView/MusicView'
+
+import styles from './styles.scss'
 import { MUSICS_TABLE } from '../../constans'
 
-class MusicListCmp extends React.Component {
+class AuthorListCmp extends React.Component {
+  state = {
+    musicsIds: [],
+    isAdding: true
+  }
   getIds = () => {
-    const musics = dataBase.queryAll(MUSICS_TABLE)
-    console.log(musics)
+    const authors = dataBase.queryAll(MUSICS_TABLE).map((d) => d.ID)
+    this.setState({ isAdding: false })
+    this.setState({ musicsIds: authors})
   }
 
   componentDidMount() {
@@ -15,11 +23,27 @@ class MusicListCmp extends React.Component {
   render() {
 
     return (
-      <div>
-        list
+      <div className={styles.container}>
+        {
+          !this.state.musicsIds.length && !this.state.isAdding &&
+            <div>
+              Нет песен
+            </div>
+        }
+        {
+          !!this.state.musicsIds.length &&
+            this.state.musicsIds.map((id) => <MusicView key={id} id={id} updateIds={this.getIds}/>)
+        }
+        {
+          this.state.isAdding &&
+          <MusicView isAdding updateIds={this.getIds}/>
+        }
+        <div className={styles.btnAdd} onClick={() => this.setState({ isAdding: !this.state.isAdding })}>
+          +
+        </div>
       </div>
     )
   }
 }
 
-export const MusicList = MusicListCmp
+export const MusicList = AuthorListCmp

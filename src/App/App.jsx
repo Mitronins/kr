@@ -21,7 +21,7 @@ export const history = createBrowserHistory();
 const App = (props) => {
   return (
     <Router history={history}>
-      <div>
+      <div className={styles.app}>
         {props.auth && <Header/>}
         <Switch>
           {props.auth && <Route exact path='/sings' component={MusicList}/>}
