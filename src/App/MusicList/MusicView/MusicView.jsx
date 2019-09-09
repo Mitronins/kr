@@ -1,9 +1,10 @@
 import React from 'react'
 import Input from 'antd/es/input'
 import { dataBase } from '../../../Root'
-import { MUSICS_TABLE } from '../../../constans'
+import { AUTHOR_TABLE, MUSICS_TABLE } from '../../../constans'
 
 import styles from './styles.scss'
+import { Select } from 'antd'
 
 class MusicViewCmp extends React.Component {
   state = {
@@ -11,6 +12,7 @@ class MusicViewCmp extends React.Component {
     author: '',
     year: '',
     comments: [],
+    authors: [],
   }
 
   getMusic = () => {
@@ -25,11 +27,8 @@ class MusicViewCmp extends React.Component {
 
   addMusic = () => {
     const { name, author, year } = this.state
-    console.log(name)
-    console.log(author)
-    console.log(year)
-    if (name && author && year ) {
-    console.log(true)
+
+    if (name && author && year) {
       dataBase.insert(MUSICS_TABLE, {
         name: this.state.name,
         author: this.state.author,
@@ -49,7 +48,7 @@ class MusicViewCmp extends React.Component {
         })
         break
       case 2:
-        this.setState({ author: e.target.value }, () => {
+        this.setState({ author: e }, () => {
           this.updateDBRow()
         })
         break
@@ -64,31 +63,39 @@ class MusicViewCmp extends React.Component {
 
   updateDBRow = () => {
     if (this.props.id) {
-      dataBase.update(MUSICS_TABLE, {ID: this.props.id}, (row) => {
-        row.name = this.state.name;
-        row.author = this.state.author;
-        row.year = this.state.year;
+      dataBase.update(MUSICS_TABLE, { ID: this.props.id }, (row) => {
+        row.name = this.state.name
+        row.author = this.state.author
+        row.year = this.state.year
 
-        return row;
-      });
+        return row
+      })
 
-      dataBase.commit();
+      dataBase.commit()
     }
   }
 
   deleteMusic = () => {
-    dataBase.deleteRows(MUSICS_TABLE, {ID: this.props.id});
-    dataBase.commit();
-    this.props.updateIds();
+    dataBase.deleteRows(MUSICS_TABLE, { ID: this.props.id })
+    dataBase.commit()
+    this.props.updateIds()
   }
 
   componentDidMount() {
     if (!this.props.isAdding) {
       this.getMusic()
     }
+    this.getAuthors()
+  }
+
+  getAuthors = () => {
+    const authors = dataBase.queryAll(AUTHOR_TABLE)
+    this.setState({ authors })
   }
 
   render() {
+    const { authors } = this.state
+
     return (
       <div className={styles.container}>
         <div className={styles.inputContainer}>
@@ -103,13 +110,23 @@ class MusicViewCmp extends React.Component {
         </div>
         <div className={styles.inputContainer}>
           <div className={styles.text}>
-           Автор
+            Автор
           </div>
-          <Input
+          <Select
             value={this.state.author}
-            className={styles.input}
+            className={styles.select}
             onChange={this.updateMusic(2)}
-          />
+          >
+            {
+              authors.map((a) => {
+                return (
+                  <Select.Option value={a.ID}>
+                    {a.name}
+                  </Select.Option>
+                )
+              })
+            }
+          </Select>
         </div>
         <div className={styles.inputContainer}>
           <div className={styles.text}>
