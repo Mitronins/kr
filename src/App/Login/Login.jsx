@@ -2,13 +2,24 @@ import React from 'react'
 import { Form, Icon, Input, Button } from 'antd'
 import styles from './styles.scss'
 import { NavLink } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { getAllUsers, setAuth } from '../../AC/users'
+import { history } from '../../App/App'
 
 class LoginCmp extends React.Component {
   handleSubmit = e => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
+        const users = this.props.getAllUsers().data
+
+        users.forEach(user => {
+          if (values['username'] === user.login && values['password'] === user.pass) {
+            this.props.setAuth('true')
+            history.push('/music')
+          }
+        })
+
       }
     })
   }
@@ -54,4 +65,4 @@ class LoginCmp extends React.Component {
   }
 }
 
-export const Login = Form.create()(LoginCmp)
+export const Login = connect(null, { setAuth, getAllUsers })(Form.create()(LoginCmp))

@@ -1,20 +1,21 @@
 import dataBase from '../Root'
-import { SINGS_TABLE } from '../constans'
+import { MUSICS_TABLE } from '../constans'
 
 export class SingService {
     static getUsersList() {
-        return dataBase.queryAll(SINGS_TABLE);
+        return dataBase.queryAll(MUSICS_TABLE);
     }
 
-    static addNewSing(newSingData) {
-        const singGateway = new SingGateway(
-            newSingData.name,
-            newSingData.author,
-            newSingData.description,
-            newSingData.album,
-        );
+    static addNewUser(newSingData) {
+        const newSingId = dataBase.insert(MUSICS_TABLE, {
+            name: this.name,
+            author: this.author,
+            description: this.description,
+            album: this.album,
+        });
+        dataBase.commit();
 
-        return singGateway.addNewSing();
+        return SingFinder.getSing( { query: { ID: newSingId }})[0];
     }
 
     static editSing = (newSingData) => {

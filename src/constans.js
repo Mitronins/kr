@@ -1,4 +1,4 @@
-export const SINGS_TABLE = 'sings';
+export const MUSICS_TABLE = 'sings';
 export const COMMENTS_TABLE = 'comments';
 export const USERS_TABLE = 'users';
 
@@ -9,5 +9,6 @@ export const DELETE_SING = 'DELETE_SING';
 
 export const GET_ALL_USERS = 'GET_ALL_USERS';
 export const SIGN_UP_USER = 'SIGN_UP_USER';
+export const SET_AUTH = 'SET_AUTH';
 export const LOG_IN = 'LOGIN';
 export const LOG_OUT = 'LOGIN';
