@@ -10,7 +10,7 @@ import App from './App/App'
 export const dataBase = new localStorageDB("library", localStorage);
 
 if (dataBase.isNew()) {
-    dataBase.createTable(MUSICS_TABLE, ["name", "author", "year", "comments"]);
+    dataBase.createTable(MUSICS_TABLE, ["name", "author", "year"]);
     dataBase.createTable(AUTHOR_TABLE, ["name", "birthDate", "nationality"]);
     dataBase.createTable(PLAYLIST_TABLE, ["name", "musics"]);
     dataBase.createTable(USERS_TABLE, ["login", "pass"]);
