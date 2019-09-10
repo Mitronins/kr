@@ -1,17 +1,30 @@
-import React from 'react';
+import React from 'react'
 import { dataBase } from '../../Root'
 import { MusicView } from './MusicView/MusicView'
 
 import styles from './styles.scss'
 import { MUSICS_TABLE } from '../../constans'
+import { Input } from 'antd'
 
 class AuthorListCmp extends React.Component {
   state = {
     musicsIds: [],
-    isAdding: true
+    isAdding: true,
+    text: '',
   }
   getIds = () => {
-    const musicsIds = dataBase.queryAll(MUSICS_TABLE).map((d) => d.ID)
+    const { text } = this.state
+    const params = text && {
+      query: (row) => {
+        console.log(row)
+        if (row.name.includes(text)) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+    const musicsIds = dataBase.queryAll(MUSICS_TABLE, params).map((d) => d.ID)
     this.setState({ isAdding: false })
     this.setState({ musicsIds })
   }
@@ -24,15 +37,21 @@ class AuthorListCmp extends React.Component {
 
     return (
       <div className={styles.container}>
+        <Input
+          className={styles.input}
+          placeholder={'Поиск песен'}
+          value={this.state.text}
+          onChange={(e) => this.setState({ text: e.target.value }, () => this.getIds())}
+        />
         {
           !this.state.musicsIds.length && !this.state.isAdding &&
-            <div>
-              Нет песен
-            </div>
+          <div>
+            Нет песен
+          </div>
         }
         {
           !!this.state.musicsIds.length &&
-            this.state.musicsIds.map((id) => <MusicView key={id} id={id} updateIds={this.getIds}/>)
+          this.state.musicsIds.map((id) => <MusicView key={id} id={id} updateIds={this.getIds}/>)
         }
         {
           this.state.isAdding &&
